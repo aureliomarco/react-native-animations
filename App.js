@@ -22,11 +22,20 @@ import {
 //
 // Animação Decay
 // Dá uma aceleração ao objeto
+// Como se eu lançasse uma bola com determinada força, a bola ia parar
+// de acordo com a velocidade aplicada, não defino o local final onde
+// a bola vai cair, parecido com o angrybirds.
+//
+// Math
+// É possivel usar divide, multiply, add, subtract, modulo
 
+const ballY = new Animated.Value(0);
+const ballX = Animated.divide(ballY, 2)
 
 export default class App extends Component {
   state = {
-    ballY: new Animated.Value(0),
+    ballY: ballY,
+    ballX: ballX
   };
 
   componentDidMount() {
@@ -40,7 +49,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <Animated.View style={[
           styles.ball,
-          { top: this.state.ballY }
+          { top: this.state.ballY, left: this.state.ballX }
         ]} />
       </View>
     );
