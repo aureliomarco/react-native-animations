@@ -19,6 +19,10 @@ import {
 // Animação Spring
 // Vai de um ponto a outro, dando um feedback de retorno,
 // como se fosse um elástico.
+//
+// Animação Decay
+// Dá uma aceleração ao objeto
+
 
 export default class App extends Component {
   state = {
@@ -26,9 +30,8 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    Animated.spring(this.state.ballY, {
-      toValue: 300,
-      bounciness: 50,
+    Animated.decay(this.state.ballY, {
+      velocity: 0.5
     }).start();
   }
 
