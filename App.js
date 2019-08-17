@@ -13,15 +13,22 @@ import {
 // Animated.Image
 // Animated.ScrollView
 
+// Animação Timing
+// Vai de um ponto a outro em determinado tempo.
+//
+// Animação Spring
+// Vai de um ponto a outro, dando um feedback de retorno,
+// como se fosse um elástico.
+
 export default class App extends Component {
   state = {
     ballY: new Animated.Value(0),
   };
 
   componentDidMount() {
-    Animated.timing(this.state.ballY, {
+    Animated.spring(this.state.ballY, {
       toValue: 300,
-      timing: 2000,
+      bounciness: 50,
     }).start();
   }
 
