@@ -34,6 +34,10 @@ import {
 //
 // Animated.parallel
 // É um array, executa as animações em paralelo
+//
+// Animated.stagger
+// Executa o primeiro item do array, por um tempo determinado, após começa a 
+// os próximos em paralelo
 
 const ballY = new Animated.Value(0);
 const ballX = Animated.divide(ballY, 2)
@@ -45,14 +49,11 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    Animated.parallel([
+    Animated.stagger(200, [
       Animated.timing(this.state.ballY, {
         toValue: 200,
         duration: 500
       }),
-
-      Animated.delay(1000),
-
       Animated.timing(this.state.ballX, {
         toValue: 200,
         duration: 500
