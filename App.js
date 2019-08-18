@@ -31,6 +31,9 @@ import {
 //
 // Animated.sequence
 // É um array, que executa as animações em sequência.
+//
+// Animated.parallel
+// É um array, executa as animações em paralelo
 
 const ballY = new Animated.Value(0);
 const ballX = Animated.divide(ballY, 2)
@@ -42,7 +45,7 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    Animated.sequence([
+    Animated.parallel([
       Animated.timing(this.state.ballY, {
         toValue: 200,
         duration: 500
