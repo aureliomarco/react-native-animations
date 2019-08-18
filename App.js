@@ -44,46 +44,14 @@ const ballX = Animated.divide(ballY, 2)
 
 export default class App extends Component {
   state = {
-    ballY: new Animated.Value(0),
-    ballX: new Animated.Value(0)
+    ballY: new Animated.Value(0)
   };
 
   componentDidMount() {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(this.state.ballY, {
-          toValue: 200,
-          duration: 500
-        }),
-
-        Animated.delay(200),
-
-        Animated.timing(this.state.ballX, {
-          toValue: 200,
-          duration: 500
-        }),
-
-        Animated.delay(200),
-
-        Animated.timing(this.state.ballY, {
-          toValue: 0,
-          duration: 500
-        }),
-
-        Animated.delay(200),
-
-        Animated.timing(this.state.ballX, {
-          toValue: 0,
-          duration: 500
-        },
-
-          Animated.delay(200),
-        ),
-      ]), {
-        iterations: 2,
-      }
-    ).start();
-
+    Animated.timing(this.state.ballY, {
+      toValue: 400,
+      duration: 1000
+    }).start();
   }
 
   render() {
@@ -91,7 +59,14 @@ export default class App extends Component {
       <View style={styles.container}>
         <Animated.View style={[
           styles.ball,
-          { top: this.state.ballY, left: this.state.ballX }
+          {
+            top: this.state.ballY,
+            opacity: this.state.ballY.interpolate({
+              inputRange: [0, 280, 300], // o ballY vai de 0 à 300
+              outputRange: [1, 1, 0.2],    // Quando ballY=0 a opacidade vai ser de 1
+              extrapolate: 'clamp'
+            })                           // Quando ballY=300 a opacidade vai ser 0
+          }                              // Quando o ballY=280 a opacidade vai ser 1 
         ]} />
       </View>
     );
