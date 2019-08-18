@@ -27,21 +27,34 @@ import {
 // a bola vai cair, parecido com o angrybirds.
 //
 // Math
-// É possivel usar divide, multiply, add, subtract, modulo
+// É possivel usar divide, multiply, add, subtract, modulo.
+//
+// Animated.sequence
+// É um array, que executa as animações em sequência.
 
 const ballY = new Animated.Value(0);
 const ballX = Animated.divide(ballY, 2)
 
 export default class App extends Component {
   state = {
-    ballY: ballY,
-    ballX: ballX
+    ballY: new Animated.Value(0),
+    ballX: new Animated.Value(0)
   };
 
   componentDidMount() {
-    Animated.decay(this.state.ballY, {
-      velocity: 0.5
-    }).start();
+    Animated.sequence([
+      Animated.timing(this.state.ballY, {
+        toValue: 200,
+        duration: 500
+      }),
+
+      Animated.delay(1000),
+
+      Animated.timing(this.state.ballX, {
+        toValue: 200,
+        duration: 500
+      })
+    ]).start();
   }
 
   render() {
