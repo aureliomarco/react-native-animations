@@ -4,6 +4,7 @@ import {
   View,
   Animated,
   Text,
+  PanResponder
 } from 'react-native';
 
 // Classe Animated
@@ -40,34 +41,48 @@ import {
 // os próximos em paralelo
 
 const ballY = new Animated.Value(0);
-const ballX = Animated.divide(ballY, 2)
 
 export default class App extends Component {
   state = {
-    ballY: new Animated.Value(0)
+    ball: new Animated.ValueXY({ x: 0, y: 0 }),
   };
 
-  componentDidMount() {
-    Animated.timing(this.state.ballY, {
-      toValue: 400,
-      duration: 1000
-    }).start();
+  componentWillMount() {
+    this._panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder: (e, gestureState) => true,
+      onPanResponderGrant: (e, gestureState) => {
+        this.state.ball.setOffset({
+          x: this.state.ball.x._value,
+          y: this.state.ball.y._value
+        })
+
+        this.state.ball.setValue({ x: 0, y: 0 });
+      },
+      onPanResponderMove: Animated.event([null, {
+        dx: this.state.ball.x,
+        dy: this.state.ball.y
+      }]),
+      onPanResponderRelease: () => {
+        this.state.ball.flattenOffset();
+      }
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Animated.View style={[
-          styles.ball,
-          {
-            top: this.state.ballY,
-            opacity: this.state.ballY.interpolate({
-              inputRange: [0, 280, 300], // o ballY vai de 0 à 300
-              outputRange: [1, 1, 0.2],    // Quando ballY=0 a opacidade vai ser de 1
-              extrapolate: 'clamp'
-            })                           // Quando ballY=300 a opacidade vai ser 0
-          }                              // Quando o ballY=280 a opacidade vai ser 1 
-        ]} />
+        <Animated.View
+          {...this._panResponder.panHandlers}
+          style={[
+            styles.ball,
+            {
+              transform: [
+                { translateX: this.state.ball.x },
+                { translateY: this.state.ball.y }
+              ]
+            }
+          ]}
+        />
       </View>
     );
   }
